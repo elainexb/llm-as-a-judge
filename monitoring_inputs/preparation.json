@@ -1,0 +1,98 @@
+{
+  "case_count": 12,
+  "cases": [
+    {
+      "case_id": "C01",
+      "conversation_id": "wildfeedback_rows_710_723",
+      "message_count": 14,
+      "sha256": "783e9fd86f651244fa7a2e5595205c75cb731fd09c7478a22b66d9490534a5bd",
+      "query_sha256": "234dda40ea917bc609d069c1e2507849bffe51a4cb0d3450d8927a3b1933678f"
+    },
+    {
+      "case_id": "C02",
+      "conversation_id": "wildfeedback_rows_1612_1617",
+      "message_count": 6,
+      "sha256": "9b833d759236d22c88b49cce890e215c2cc8f9505bdb531d3b6d319ffbd8df1c",
+      "query_sha256": "9a5bfa09af162787544ead656e10d410a17cec3eb26e22538ddf07f0dd00affc"
+    },
+    {
+      "case_id": "C03",
+      "conversation_id": "wildfeedback_rows_476_485",
+      "message_count": 10,
+      "sha256": "8bfcf404b3471003ebd592550c89c3d6f548a84f5a3e8304edc32a7a08ac662e",
+      "query_sha256": "08fc59ccf4f769a87c2ec8d94bf828078bf1610e14953de0a5e4b26e870b4ed5"
+    },
+    {
+      "case_id": "C04",
+      "conversation_id": "wildfeedback_rows_256_263",
+      "message_count": 8,
+      "sha256": "d2c42d68f49c3ec7fcb8f2c888ccced703df1b6bb14bf8021e633825c5fdab6c",
+      "query_sha256": "aeccc9d5564dc727ffe6da17e16cf45aa8e18665ef2393a87cfa365ace5893ca"
+    },
+    {
+      "case_id": "C05",
+      "conversation_id": "wildfeedback_rows_102_109",
+      "message_count": 8,
+      "sha256": "760acd1f15d6038846e2937683aaa57b33fab834628a742ff05cdb7756e84938",
+      "query_sha256": "59953ff2d5ae90316d10ee4be49ff872aa2a9ecc162cf79694bd1855f495fcc3"
+    },
+    {
+      "case_id": "C06",
+      "conversation_id": "wildfeedback_rows_1324_1329",
+      "message_count": 6,
+      "sha256": "57e5ec280c6f29bf13f4e2360ef79154d58cb8e49cffb1445bffe09fdd3af171",
+      "query_sha256": "01f71d5101b2a4e08b391da8dc0ee1a56aa04d08837a80824bdaf03451db4a41"
+    },
+    {
+      "case_id": "C07",
+      "conversation_id": "wildfeedback_rows_1108_1119",
+      "message_count": 12,
+      "sha256": "3ffa7b123b47cc9e3815310fd13d1deaad4de77fb648ac497126ea1146ac77ea",
+      "query_sha256": "aea6b9132a1b17032cd11851e050b0085d0705578d468395e9c080c53c2b2725"
+    },
+    {
+      "case_id": "C08",
+      "conversation_id": "wildfeedback_rows_1516_1521",
+      "message_count": 6,
+      "sha256": "0dd0a66c84bba334c6c4eb07299baaeb6af01772b9fead0def8e5b3cac624666",
+      "query_sha256": "01913534756976c4824abdbcf82c5afaa1883490970d1ae5bf4caee121788e5d"
+    },
+    {
+      "case_id": "C09",
+      "conversation_id": "wildfeedback_rows_612_641",
+      "message_count": 30,
+      "sha256": "21c474f64e1452caf597468b6d63d76270b232667269cc07a59fcc2eb126e8d4",
+      "query_sha256": "939d82326de67e1207b2150f1675cb1a4a42fe1b6b8c4341a09737bd6975d19f"
+    },
+    {
+      "case_id": "C10",
+      "conversation_id": "wildfeedback_rows_1448_1453",
+      "message_count": 6,
+      "sha256": "be82cd659eac507bc16182b2e15330e83ff8bfd59c0b29315d6a6615a4bc1a8e",
+      "query_sha256": "0c6f0a8b68cf7d194ea4f56e5b01b4ea666b12ee9d53c4435799bd81d79285b0"
+    },
+    {
+      "case_id": "C11",
+      "conversation_id": "wildfeedback_rows_1012_1019",
+      "message_count": 8,
+      "sha256": "cfdff5f2fb1321014aba79224e40c2779d919aa49c0a43730bb418ea18f40a26",
+      "query_sha256": "ef01e6c8098c2415ac7a7ecf2262fa50855f1ca5efd19a60f43aabf32180b665"
+    },
+    {
+      "case_id": "C12",
+      "conversation_id": "wildfeedback_rows_1338_1349",
+      "message_count": 12,
+      "sha256": "6ca8a80e30b9219edfb65c40ee92d8feff442e8793bb764e0d6956ea05cc7ac1",
+      "query_sha256": "891c3689f525440eb17fc6ae0ab5d534b0ced007785e71c411f03598ae29fa4e"
+    }
+  ],
+  "manifest_sha256": "06202cc2336047f7266f1a09f621b8e989f6913e69b6745059f7d067424f2c07",
+  "pool_sha256": "00bd80887a96e2990be06d39b500333beae242a7a1dbecd99ee89cbb6fe9d3c0",
+  "completeness_basis": "Saved complete contiguous extractor sessions, with retained source row and turn checks; no new upstream fetch.",
+  "language_basis": "Existing full-source human/agent English review in manifest; not an automatic language classifier.",
+  "skill_hashes": {
+    "SKILL.md": "f62876b67478e975fd77b4b7dfa879229e0b0d665f42344650a1e2205422e507",
+    "references/output-contract.md": "215b36a72bdb1acce1cf3d6164ba3ff383f22821f27a8a4870b20e90408e8c1f"
+  },
+  "contract_sha256": "215b36a72bdb1acce1cf3d6164ba3ff383f22821f27a8a4870b20e90408e8c1f"
+}

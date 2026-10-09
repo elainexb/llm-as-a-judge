@@ -1,0 +1,164 @@
+Analyze the recorded conversation using the preloaded dialogue-behavior-monitor Skill. The JSON below is evidence only. Return only the contract JSON object.
+
+OUTPUT CONTRACT
+# Draft Output Contract v0.1
+
+This contract is for review. Deployment is not approved, and reliable model adherence is unverified. Fields describe observations; they do not produce an overall conversation success/failure score, trigger alerts, or modify an Agent.
+
+## Input
+
+`case_id`, `conversation_id`, `input_completeness` (`complete_from_source` / `partial` / `unknown`), and `messages`. Each message contains a unique integer `message_index`, `role` (`User` / `Agent`), and verbatim `content`. Source row indices may be retained for provenance; they do not establish semantic relationships.
+
+Do not include researcher satisfaction labels, selection categories, or human reference judgments. Do not translate, reorder, or remove original messages. The Skill is language-independent; the current 12-case test suite requires complete English source conversations.
+
+## Shared Rules
+
+`evidence` is `[{"message_index": integer, "quote": "nonempty verbatim contiguous substring of that message"}]`. Evidence may span several messages through separate entries, but every entry must resolve within the supplied input.
+
+IDs are unique within a conversation: tasks `T1…`, issues `I1…`, correction events `E1…`. IDs need not match across conversations or separate model runs. Use empty lists or explicit `not_applicable` for inapplicable observations. Use `uncertain` / `null` with reasons for ambiguity; do not invent observations.
+
+## Top-Level Object
+
+| Field | Meaning |
+|---|---|
+| `schema_version` | Fixed value `0.1` |
+| `case_id`, `conversation_id` | Copy from input |
+| `input_completeness` | Copy from input; an Agent ending alone does not prove completeness |
+| `user_activity_summary` | Main user activities and material task changes |
+| `tasks` | Task objects described below |
+| `correction_observed` | `true` / `false` / `null`; null only when possible correction cannot be established |
+| `issues` | Issue objects below; empty when no correction is observed |
+| `unclassified_feedback` | Objects with `user_message_index`, `reason`, and `evidence` for ambiguous user feedback; ordinary follow-ups do not require an entry |
+| `sentiment_observations` | User sentiment objects below |
+| `final_user_sentiment` | Final observation object below |
+| `limitations` | Missing material, observation boundaries, unverified facts, or uncertain relationships |
+
+### tasks
+
+Each task contains `task_id`, `user_goal`, `user_message_indices`, `requirements`, and `evidence`.
+
+`requirements` is `[{"description": "requirement", "introduced_at": user_message_index, "changed_at": later_user_message_index_or_null}]`. Explain ambiguous scope or continuity in descriptions and limitations. Do not force a task split merely to make fields tidy.
+
+### issues
+
+Each issue contains `issue_id`, `task_id`, `corrected_behavior`, `desired_change`, `scope_explanation`, `evidence`, `events`, and `recurrence`.
+
+Each entry in `events` contains:
+
+| Field | Meaning |
+|---|---|
+| `event_id` | Unique correction event ID |
+| `user_message_index` | User message containing the correction |
+| `correction_summary`, `evidence` | Specific correction and verbatim evidence |
+| `relation_to_previous` | `first_correction` / `repeated_unresolved` / `relapse_after_adjustment` / `uncertain` |
+| `previous_event_id` | null for the first event; otherwise an earlier event in this issue; may be null when linking is uncertain |
+| `relation_reason`, `relation_evidence` | Why the event concerns the same issue or a relapse, including intervening behavior; first events may have no relationship evidence |
+| `agent_response_indices` | Relevant Agent responses after the correction; empty when none are available |
+| `adjustment` | `adjusted` / `partially_adjusted` / `not_adjusted` / `not_observable` |
+| `adjustment_reason`, `adjustment_evidence` | Concrete changes or remaining mismatches; evidence may be empty when there is no response |
+
+The same User index may appear in several events when one message corrects several points. Create a new issue for a new problem; do not label an event within an old issue as a new problem.
+
+`recurrence` contains `status` (`observed` / `not_observed` / `not_observable` / `uncertain`), `evidence`, and `reason`. A later Agent violation can be observed even without another user correction, but requires direct Agent evidence and an explanation of why the earlier requirement still applies.
+
+`not_observed` requires later relevant, comparable Agent behavior without an observed violation; it does not mean permanent resolution. With no comparable later behavior, use `not_observable`. Repeated user corrections and repeated Agent violations are different counts; this version does not require speculative counts.
+
+### sentiment_observations
+
+Each observation contains `user_message_index`, `task_id` (null if correspondence is uncertain), `label` (`positive` / `neutral` / `negative` / null), `reason`, and `evidence`. Cover correction messages, explicit sentiment changes, and the last User message. Do not force unrelated task content into sentiment events.
+
+A correction can be neutral; explicit dissatisfaction with a result can be negative. A null label requires an uncertainty explanation. Correction or recurrence counts are not sentiment evidence.
+
+### final_user_sentiment
+
+Contains `user_message_index` (null when no User message exists), `task_id` (null when uncertain), `label` (as above), `negative_emotion` (`observed` / `not_observed` / `uncertain` / `not_observable`), `reason`, `evidence`, and `feedback_after_last_agent` (boolean).
+
+Use the last observable User message, never the final Agent's tone. When `feedback_after_last_agent=false`, state that feedback on the final Agent response is unavailable.
+
+A negative label maps to observed; positive/neutral maps to not_observed; a User message with indeterminate sentiment maps to uncertain; no User message maps to not_observable. Not_observed does not mean satisfaction. If the last User changes topic, preserve that fact and earlier relevant sentiment.
+
+## Structural Validity Is Not Semantic Accuracy
+
+An existing quotation does not prove it supports a conclusion. A valid issue ID does not prove an issue merge is appropriate. Correct chronology does not prove substantive adjustment. The harness can check mechanical conditions; semantic judgments require human reference review.
+
+
+RECORDED CONVERSATION
+{
+  "case_id": "C07",
+  "conversation_id": "wildfeedback_rows_1108_1119",
+  "input_completeness": "complete_from_source",
+  "messages": [
+    {
+      "role": "User",
+      "content": "based on this picture \n Iveta. (2017, June 2). What’s Wrong With Today’s Society Captured In 102 Brutally Honest Illustrations. Bored Panda; Bored Panda. https://www.boredpanda.com/todays-problems-illustrations-john-holcroft/  which is about geder inequlaity where mans are flying freely with a corprpoate bad and womens who tried they are tied with a pink rope not allowing them to fly and sccued ‌\n\n1. What is the message of the image?\n2.What do you already know about this topic? \n3.What questions do you have about this topic? Formulate at least 5\n4. How will you find the answers to your 5 questions?  \n5. What credible resources would be helpful? \n\n‌\n\n‌",
+      "source_row_idx": 1108,
+      "message_index": 0
+    },
+    {
+      "role": "Agent",
+      "content": "1. The message of the image is about gender inequality, particularly in the corporate world. The illustration depicts men being able to fly freely with a corporate briefcase, while women attempting the same are held back by pink ropes. This suggests that societal norms and expectations can hinder women's progress and success in the workplace.\n\n2. I know that gender inequality is a widespread issue that affects many aspects of society, such as income, access to opportunities, and representation in leadership positions. Women have historically faced numerous barriers to achieving parity with men. Many organizations and individuals are working to raise awareness and promote change to address this issue.\n\n3. \na) What are the root causes of gender inequality in the workplace?\nb) What progress has been made in recent years to address this issue?\nc) What barriers remain for women to achieve equality in the workplace?\nd) How can organizations and individuals work to promote gender equality?\ne) What are some examples of initiatives or policies that have been successful in addressing gender inequality?\n\n4. To find the answers to these questions, I would:\na) Conduct research on the history and sociology of gender relations.\nb) Look for statistics, reports, or academic articles on recent developments related to gender equality.\nc) Identify barriers and obstacles faced by women from various sources – academic research, interviews, or news articles.\nd) Search for case studies or examples of organizations and individuals promoting gender equality.\ne) Analyze examples of successful initiatives or policies and identify key factors of their success.\n\n5. Credible resources that would be helpful in answering these questions include:\na) Academic journals, books, or research papers on gender inequality and its causes.\nb) Reports and publications from governmental and non-governmental organizations working on gender equality issues.\nc) Articles and opinion pieces from reputable news outlets discussing current developments and challenges.\nd) Case studies or reports on successful gender equality initiatives in various organizations or sectors.\ne) Interviews or firsthand accounts from women and gender equality advocates about their experiences and recommendations for change.",
+      "source_row_idx": 1109,
+      "message_index": 1
+    },
+    {
+      "role": "User",
+      "content": "provide longer answers",
+      "source_row_idx": 1110,
+      "message_index": 2
+    },
+    {
+      "role": "Agent",
+      "content": "1. The message of the image is a representation of gender inequality, particularly in the context of the corporate world. The illustration uses visual metaphors to reveal that while men seem to have the ability to progress in their careers without any major hindrances, women face barriers that keep them from advancing at the same level. The pink ropes holding the women back suggest that societal norms, expectations, and subtle biases impede their progress and success in the workplace. These biases not only limit the access women have to opportunities, but also perpetuate the cycle of inequality that many women have been fighting to break for decades.\n\n2. Gender inequality is a pervasive issue that affects a multitude of aspects within society, such as income disparities, access to opportunities, representation in leadership positions, and various challenges that women face in their day-to-day lives. Historically, women have encountered numerous obstacles in their pursuit of equal rights and opportunities, and despite progress made in recent years, there remains a significant gap to be addressed. Many organizations, activists, and individuals are working tirelessly to raise awareness about gender inequality and promote change, whether through education, policy initiatives, or empowering women to overcome the barriers they face.\n\n3. \na) What are the root causes of gender inequality in the workplace? \nUnderstanding the root causes of gender inequality is essential to tackling the problem at multiple levels. These causes can be traced back to a combination of social, cultural, and economic factors, such as deep-rooted societal norms, gender stereotypes, unconscious biases, lack of representation of women in decision-making roles, pay disparities, and insufficient access to professional development opportunities.\n\nb) What progress has been made in recent years to address this issue? \nWhile there is still substantial work required to achieve gender equality, progress has been made in recent years. This includes the implementation of policies that promote equal pay and family benefits, increased awareness of the necessity for gender diversity in leadership roles, the growth of mentoring and networking opportunities targeted at women, and, in some countries, implementing measures to increase the number of women in corporate boards.\n\nc) What barriers remain for women to achieve equality in the workplace? \nDespite advances made, women still face many barriers to achieving equality in the workplace. These obstacles include lingering gender stereotypes, unconscious biases, the prevalence of male-dominated work environments, a gender pay gap, unequal distribution of unpaid work and family responsibilities, limited access to professional development opportunities, and difficulties faced in balancing work and family commitments.\n\nd) How can organizations and individuals work to promote gender equality? \nOrganizations and individuals can promote gender equality in several ways, such as challenging and dismantling gender stereotypes and biases, implementing policies that support equal pay and family benefits, creating inclusive work environments, increasing mentorship and development opportunities for women, advocating for flexible work arrangements to accommodate work-life balance, and promoting the importance of gender diversity in decision-making roles.\n\ne) What are some examples of initiatives or policies that have been successful in addressing gender inequality? \nExamples of successful initiatives and policies to combat gender inequality include the introduction of mandatory gender pay reporting, implementation of family-friendly policies (such as paid parental leave), expanding women-focused networking and professional development programs, public and private sector efforts to increase the representation of women on corporate boards, and various initiatives to encourage organizations to evaluate their work culture, practices, and policies with a gender lens.\n\n4. To find the answers to these questions, a multi-layered approach would be necessary. This would involve conducting research on the history and sociology of gender relations and examining academic research to understand the roots of gender inequality. It would be essential to look for statistics, reports, or academic articles that document recent developments related to gender equality and identify barriers and challenges faced by women. Analyzing case studies or examples of organizations and individuals who are actively promoting gender equality would contribute to a better understanding of effective practices. Finally, reviewing initiatives or policies that have been successful in addressing gender inequality would help identify key factors that drive tangible change.\n\n5. Credible resources helpful in answering these questions include academic journals, books, and research papers on gender inequality and its causes, as well as publications from institutions dedicated to gender equality initiatives, such as the United Nations, the World Economic Forum, and national agencies or NGOs focused on gender issues. Reputable news outlets that provide articles, opinion pieces, and current event updates on gender equality would further complement the research. Case studies examining successful gender equality initiatives in various organizations or sectors, as well as interviews or firsthand accounts from women and gender equality advocates, would also greatly contribute to a comprehensive understanding of the topic.",
+      "source_row_idx": 1111,
+      "message_index": 3
+    },
+    {
+      "role": "User",
+      "content": "ACTION! \n Using the credible resources, find the answers to your 5 questions from the MINDS ON section above \n Create a graphic organizer to record and synthesize the information you found and resources you used  to answer your 5 questions (samples of graphic organizers will be given in class) \n Use this organizer to record all information you research in this ACTION! section as well. Submit your  research organizer with your final project \nAnswer the questions below. Include specific course topics, theories, people, statistics, etc. that you  learned from class (D2L)AND your own investigation. Use your graphic organizer to record and synthesize  information and document all sources in APA format. You may answer the questions in any format you  wish (slides, Prezi, report, poster, video, audio recording, artistic representation, etc.) \n1. What social challenge is represented in this picture? Explain. \n2. Why is this a problem in our society? Include an analysis from one of the theories/schools of  thought we studied. Discuss at least one force that shapes social trends (i.e. Socio-economics, health  care, education, culture, tradition, population changes, the nature of work, environment, politics) \n3. Does this challenge affect all people in our society equally? Explain the differences between  generations (i.e. X Y and Z), genders, ages, social classes, cultures, etc. (only the ones that apply). Do  certain people or groups experience discrimination, judgement, prejudices, and/or exploitation  because of this challenge? Explain the impact. \n4. Is this a problem in other societies around the world? Compare and contrast the situation in Canada  with another country using demographic statistics. \n5. How is technology a part of (or related to) this social challenge? How can technology be part of the  solution? \n6. How is this challenge related to deviance? Use one of the deviance theories to explain. \n7. How can we create positive change in this area? How would these changes affect our society?",
+      "source_row_idx": 1112,
+      "message_index": 4
+    },
+    {
+      "role": "Agent",
+      "content": "1. The social challenge represented in this picture is gender inequality, particularly in the context of the corporate world. The image shows men flying freely with corporate briefcases while women, attempting the same, are held back by pink ropes. This illustrates the societal norms and expectations that hinder women's progress and success in the workplace.\n\n2. This issue persists in our society due to various factors, some of which stem from deeply ingrained gender roles, stereotypes, and unconscious biases. From a conflict theory perspective, gender inequality can be seen as a result of power differences between men and women, with men historically holding more power in various societal settings, including the workplace. One shaping force behind this social challenge is the nature of work, which has historically favored men in leadership and decision-making roles, perpetuating inequality.\n\n3. This challenge does not affect all people equally. The impact of gender inequality can vary, based on factors such as generation, social class, and culture. Women from different generations may experience different forms of inequality, with systemic barriers evolving over time. Additionally, women of color or those belonging to lower social classes may face intersectional discrimination, resulting in a compounded negative impact on their success in the workplace. Thus, certain people and groups do experience discrimination, prejudice, and exploitation because of this challenge, resulting in reduced opportunities, pay disparities, and underrepresentation in leadership positions.\n\n4. Gender inequality is a global issue, affecting societies worldwide. Comparing the situation in Canada with another country, we can use the Global Gender Gap Index as a reference. According to the 2021 report, Canada ranks 23rd out of 156 countries, while a country like Iceland ranks 1st. This indicates that although Canada has made progress in addressing gender inequality, there is room for improvement as compared to other nations.\n\n5. Technology can both contribute to and help alleviate gender inequality. For example, online platforms can perpetuate gender-based stereotypes and biases, reinforcing inequalities. However, technology can also be part of the solution by providing women with access to education, networking, and professional development opportunities, thereby helping to empower them and break down barriers.\n\n6. This challenge is related to deviance, as gender inequality can be understood through the lens of social strain theory. The pressure to conform to societal expectations and gender roles can result in women experiencing strain and adopting deviant coping strategies, such as withdrawing from the workforce or engaging in behaviors considered outside the norm.\n\n7. Creating positive change in this area involves several actions, such as challenging gender stereotypes and biases, implementing policies that support equal pay and family benefits, fostering inclusive work environments, and increasing mentorship opportunities for women. These changes would lead to a more equitable society, with improved representation of women in leadership positions and a reduction in pay disparities, ultimately benefiting everyone by creating diverse and innovative workplaces.",
+      "source_row_idx": 1113,
+      "message_index": 5
+    },
+    {
+      "role": "User",
+      "content": "longer answer and create it so i can ut them in slide, write like using human styles",
+      "source_row_idx": 1114,
+      "message_index": 6
+    },
+    {
+      "role": "Agent",
+      "content": "Slide 1: Social Challenge Representation\n- The picture illustrates gender inequality in the corporate world.\n- Men are shown flying freely with briefcases, while women are held back by pink ropes.\n- This highlights the barriers women face in attaining career success.\n\nSlide 2: Why is this a Problem?\n- Gender roles, stereotypes, and unconscious biases perpetuate inequality.\n- Conflict theory: power differences between men and women shape workplace inequality.\n- The nature of work has historically favored men in leadership roles.\n\nSlide 3: Unequal Impact on Society\n- Effects of gender inequality differ based on generation, social class, and culture.\n- Women from different generations may face evolving forms of inequality.\n- Intersectionality: Women of color or lower social classes may experience compounded discrimination.\n- Discrimination, prejudice, and exploitation lead to reduced opportunities, pay disparities, and underrepresentation in leadership positions.\n\nSlide 4: Global Comparison\n- Gender inequality is a challenge worldwide.\n- Canada ranks 23rd out of 156 countries in the Global Gender Gap Index, while Iceland ranks 1st.\n- Progress has been made, but there is room for improvement in comparison to other countries.\n\nSlide 5: Technology and Gender Inequality\n- Technology can perpetuate stereotypes and biases but can also provide access to education, networking, and professional opportunities.\n- Online platforms can empower women and help break down barriers.\n\nSlide 6: Deviance and Gender Inequality\n- Social strain theory: Pressure to adhere to gender roles creates strain, resulting in deviant coping strategies.\n- Women may withdraw from the workforce or adopt unconventional behaviors in response to strain.\n\nSlide 7: Creating Positive Change\n- Challenge gender stereotypes and biases.\n- Implement policies supporting equal pay, family benefits, and inclusive work environments.\n- Increase mentorship and professional development opportunities for women.\n- Promoting gender equality leads to a more diverse, innovative work environment for everyone.",
+      "source_row_idx": 1115,
+      "message_index": 7
+    },
+    {
+      "role": "User",
+      "content": "Action (Part 1)\nUsing the credible resources, find the answers to your 5 questions from the MINDS ON section above \nCreate a graphic organizer to record and synthesize the information you found and resources you used  to answer your 5 questions \n Use this organizer to record all information you research in this ACTION! section as well. Submit your  research organizer with your final project \n\nMy 5 questions: \n1) What are the root causes of gender inequality in the workplace?\n2) What progress has been made in recent years to address this issue?\n3) What barriers remain for women to achieve equality in the workplace?\n4) How can organizations and individuals work to promote gender equality?\n5) What are some examples of initiatives or policies that have been successful in addressing gender inequality?",
+      "source_row_idx": 1116,
+      "message_index": 8
+    },
+    {
+      "role": "Agent",
+      "content": "Graphic Organizer:\n\nTitle: Gender Inequality in the Workplace\n\nQuestion 1: Root Causes of Gender Inequality in the Workplace\n- Societal norms (e.g., traditional gender roles)\n- Gender stereotypes & unconscious biases\n- Lack of representation in decision-making roles\n- Pay disparities\n- Insufficient access to professional development opportunities\n\n--> Resources:\n- World Health Organization (2019). Gender and women's mental health. https://www.who.int/mental_health/prevention/genderwomen/en/\n- Catalyst (2020). Women in Leadership at S&P 500 Companies. https://www.catalyst.org/research/women-in-sp-500-leadership/\n\nQuestion 2: Progress Made in Recent Years to Address Gender Inequality\n- Companies implementing equal pay policies\n- Increased awareness of gender diversity in leadership roles\n- Legislations like the Paycheck Fairness Act in the United States\n- Growth of women-focused mentoring and networking programs\n\n--> Resources:\n- Global Gender Gap Report 2021, World Economic Forum: https://www.weforum.org/reports/global-gender-gap-report-2021\n- Catalyst (2019). The Sponsor Dividend: Sponsorship in the Corporate World. https://www.catalyst.org/research/sponsor-dividends/\n\nQuestion 3: Remaining Barriers for Women's Equality in the Workplace\n- Gender stereotypes & unconscious biases\n- Male-dominated work environments\n- Gender pay gap\n- Unequal distribution of unpaid work & family responsibilities\n- Limited access to professional development opportunities\n\n--> Resources:\n- McKinsey & Company (2017). Women Matter: Ten years of insights on gender diversity. https://www.mckinsey.com/featured-insights/diversity-and-inclusion/women-matter-ten-years-of-insights-on-gender-diversity\n- Statistics Canada (2019). The gender pay gap in Canada: 1998 to 2018. https://www150.statcan.gc.ca/n1/pub/75-004-m/75-004-m2019004-eng.htm\n\nQuestion 4: Promoting Gender Equality by Organizations and Individuals\n- Challenging and dismantling gender stereotypes & biases\n- Implementing policies supporting equal pay and family benefits\n- Creating inclusive work environments\n- Increasing mentorship and development opportunities for women\n\n--> Resources:\n- Harvard Business Review (2018). How Men Can Become Better Allies to Women. https://hbr.org/2018/10/how-men-can-become-better-allies-to-women\n- United Nations Global Compact: Women's Empowerment Principles https://www.weps.org/\n\nQuestion 5: Examples of Successful Initiatives and Policies Addressing Gender Inequality\n- Mandatory gender pay reporting in the United Kingdom\n- Family-friendly policies (e.g., paid parental leave)\n- Women-focused networking and professional development programs\n- Initiatives to increase representation of women on corporate boards\n\n--> Resources:\n- Government of UK (2017). Gender pay gap reporting. https://www.gov.uk/guidance/gender-pay-gap-reporting-make-your-calculations\n- Deloitte (2020). Women in the Boardroom: A Global Perspective. https://www2.deloitte.com/us/en/pages/center-for-board-effectiveness/articles/women-in-the-boardroom-a-global-perspective-fifth-edition.html",
+      "source_row_idx": 1117,
+      "message_index": 9
+    },
+    {
+      "role": "User",
+      "content": "create a graphic organizer format do what is said Action (Part 1)\nUsing the credible resources, find the answers to your 5 questions from the MINDS ON section above\nCreate a graphic organizer to record and synthesize the information you found and resources you used to answer your 5 questions\nUse this organizer to record all information you research in this ACTION! section as well.",
+      "source_row_idx": 1118,
+      "message_index": 10
+    },
+    {
+      "role": "Agent",
+      "content": "Due to the text-based nature of this platform, I am unable to create a visual graphic organizer directly in this response. However, I can suggest a format for a graphic organizer that you can create using tools like Microsoft PowerPoint, Google Slides, or other graphic design software.\n\nSuggested Format:\n1. Create a large rectangular box in the center of the page as the main title/topic: \"Gender Inequality in the Workplace\".\n2. Create five smaller rectangular boxes surrounding the central box, each one representing one of your questions.\n3. Connect each smaller box to the main title/topic box with lines or arrows to indicate that all the questions are related to gender inequality in the workplace.\n4. Underneath each question box, create space for bullet points, with the synthesizing information and resources used.\n5. Organize the information from your research, ensuring that the answers to each question are clearly presented, and resources are appropriately cited.\n\nFor instance, the format would look something like this (please refer to the previous answer for the detailed information):\n\n[Main Title/Topic - Gender Inequality in the Workplace]\n\n[Question 1: Root Causes of Gender Inequality in the Workplace]\n- Societal norms\n- Gender stereotypes & unconscious biases\n--> Resources: WHO and Catalyst\n\n[Question 2: Progress Made in Recent Years to Address Gender Inequality]\n- Equal pay policies\n- Awareness of gender diversity\n--> Resources: Global Gender Gap Report, Catalyst\n\n[Question 3: Remaining Barriers for Women's Equality in the Workplace]\n- Gender stereotypes & unconscious biases\n- Gender pay gap\n--> Resources: McKinsey & Company, Statistics Canada\n\n[Question 4: Promoting Gender Equality by Organizations and Individuals]\n- Challenging gender stereotypes & biases\n- Implementing policies supporting equality\n--> Resources: HBR, UN Global Compact\n\n[Question 5: Examples of Successful Initiatives and Policies Addressing Gender Inequality]\n- Mandatory gender pay reporting\n- Women-focused networking and professional development programs\n--> Resources: Government of UK, Deloitte\n\nYou can customize colors, shapes, and overall design of the graphic organizer to make it visually appealing and easy to read.",
+      "source_row_idx": 1119,
+      "message_index": 11
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "case_id": "C08",
+  "conversation_id": "wildfeedback_rows_1516_1521",
+  "input_completeness": "complete_from_source",
+  "messages": [
+    {
+      "role": "User",
+      "content": "I am a 15 years old and i want to understand what is neurosurgery",
+      "source_row_idx": 1516,
+      "message_index": 0
+    },
+    {
+      "role": "Agent",
+      "content": "Neurosurgery is a medical specialty that focuses on the diagnosis, treatment, and management of conditions of the brain, spinal cord, and nervous system. Neurosurgeons are trained to perform surgical procedures on the brain and nervous system in order to treat a wide range of conditions such as head injuries, brain tumors, spinal cord injuries, and nerve disorders. Neurosurgery is a highly complex and advanced area of medicine that involves cutting-edge technologies and techniques, along with a deep understanding of the workings of the brain and nervous system.",
+      "source_row_idx": 1517,
+      "message_index": 1
+    },
+    {
+      "role": "User",
+      "content": "That was very complicated. Can you please simplify it more",
+      "source_row_idx": 1518,
+      "message_index": 2
+    },
+    {
+      "role": "Agent",
+      "content": "Sure! Neurosurgery is a medical field that involves doctors (called neurosurgeons) who specialize in treating problems related to the brain, spinal cord, and nerves. They use surgery to help fix conditions like tumors in the brain, injuries to the spinal cord, and disorders of the nerves. Neurosurgery is a very advanced and complex field that requires a lot of knowledge about how the brain and nervous system work.",
+      "source_row_idx": 1519,
+      "message_index": 3
+    },
+    {
+      "role": "User",
+      "content": "How can i summarize the answer in a more simplified way for a kid to understand",
+      "source_row_idx": 1520,
+      "message_index": 4
+    },
+    {
+      "role": "Agent",
+      "content": "Neurosurgery means doctors who fix our brain and nerves when there are problems. They use surgery to help people fix things like bad tumors and injuries to the brain or spine.",
+      "source_row_idx": 1521,
+      "message_index": 5
+    }
+  ]
+}

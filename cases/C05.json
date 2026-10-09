@@ -1,0 +1,37 @@
+{
+  "case_id": "C05",
+  "source_conversation_id": "wildfeedback_rows_102_109",
+  "source_dataset": "microsoft/WildFeedback",
+  "source_config": "sat_dsat_annotation",
+  "source_split": "train",
+  "source_row_start": 102,
+  "source_row_end_inclusive": 109,
+  "feedback_message_index": 2,
+  "candidate_response_index": 3,
+  "messages": [
+    {
+      "message_index": 0,
+      "role": "User",
+      "content": "what are other cool engineering projects like tesla coils and induction heaters?",
+      "source_row_idx": 102
+    },
+    {
+      "message_index": 1,
+      "role": "Agent",
+      "content": "Here are some other cool engineering projects besides tesla coils and induction heaters:\n1. Robots: Building and controlling robots is a great engineering project that allows for exploring mechanical, electrical, and computer engineering concepts.\n2. Rube Goldberg Machines: These are complex machines that perform simple tasks in an overcomplicated way. They require creativity and problem-solving skills.\n3. Solar-Powered Vehicles: Designing and building a vehicle that runs entirely on solar power is an exciting challenge for engineering students.\n4. Microcontroller Projects: Creating microcontroller boards to automate tasks or control devices is a popular engineering project that involves programming and circuit design.\n5. Drones: Engineering and building a drone requires expertise in electronics, software, and mechanical design. It can be used for delivery, aerial photography, or scientific research.\n6. 3D Printing: Using a 3D printer to design and print custom parts or models is an exciting project for engineering students interested in mechanical design and materials science.",
+      "source_row_idx": 103
+    },
+    {
+      "message_index": 2,
+      "role": "User",
+      "content": "those all seem very boring",
+      "source_row_idx": 104
+    },
+    {
+      "message_index": 3,
+      "role": "Agent",
+      "content": "I apologize if those suggestions did not interest you. Here are some more unique and creative engineering projects:\n\n1. Musical Instrument Hack: Using coding and electronics, you could modify or create a musical instrument that can produce unique sounds.\n\n2. Wearable Tech: Develop wearable technology that integrates with clothing, jewelry, and accessories.\n\n3. Kinetic Sculptures: Build moving sculptures that incorporate gears, motors, and other mechanical components.\n\n4. Arcade Game Cabinets: Build an arcade game cabinet, complete with a custom-built control panel and arcade-style buttons and joysticks.\n\n5. DIY Electric Skateboard: Develop an electric skateboard that can be controlled with a handheld remote.\n\n6. Interactive Light Installation: Create an interactive light installation that responds to sound, motion, or other environmental factors.\n\n7. Hydroponic Garden: Build a hydroponic garden that allows you to grow plants indoors without soil.\n\nI hope these suggestions inspire you or provide a starting point for your project ideas.",
+      "source_row_idx": 105
+    }
+  ]
+}

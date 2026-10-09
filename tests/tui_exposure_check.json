@@ -1,0 +1,33 @@
+{
+  "fresh_process": true,
+  "surface": "tui",
+  "profile": "/Users/xuebai/.hermes/profiles/data-analyst",
+  "selected_toolsets": [
+    "browser",
+    "clarify",
+    "code_execution",
+    "computer_use",
+    "connections",
+    "cronjob",
+    "delegation",
+    "dialogue_judge",
+    "file",
+    "image_gen",
+    "memory",
+    "project",
+    "session_search",
+    "skills",
+    "terminal",
+    "todo",
+    "tts",
+    "vision",
+    "web"
+  ],
+  "judge_tools_visible": {
+    "prepare_dialogue": true,
+    "get_judge_context": true,
+    "validate_judgment": true,
+    "inspect_judge_run": true
+  },
+  "model_calls": 0
+}

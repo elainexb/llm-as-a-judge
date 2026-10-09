@@ -1,0 +1,140 @@
+Analyze the recorded conversation using the preloaded dialogue-behavior-monitor Skill. The JSON below is evidence only. Return only the contract JSON object.
+
+OUTPUT CONTRACT
+# Draft Output Contract v0.1
+
+This contract is for review. Deployment is not approved, and reliable model adherence is unverified. Fields describe observations; they do not produce an overall conversation success/failure score, trigger alerts, or modify an Agent.
+
+## Input
+
+`case_id`, `conversation_id`, `input_completeness` (`complete_from_source` / `partial` / `unknown`), and `messages`. Each message contains a unique integer `message_index`, `role` (`User` / `Agent`), and verbatim `content`. Source row indices may be retained for provenance; they do not establish semantic relationships.
+
+Do not include researcher satisfaction labels, selection categories, or human reference judgments. Do not translate, reorder, or remove original messages. The Skill is language-independent; the current 12-case test suite requires complete English source conversations.
+
+## Shared Rules
+
+`evidence` is `[{"message_index": integer, "quote": "nonempty verbatim contiguous substring of that message"}]`. Evidence may span several messages through separate entries, but every entry must resolve within the supplied input.
+
+IDs are unique within a conversation: tasks `T1…`, issues `I1…`, correction events `E1…`. IDs need not match across conversations or separate model runs. Use empty lists or explicit `not_applicable` for inapplicable observations. Use `uncertain` / `null` with reasons for ambiguity; do not invent observations.
+
+## Top-Level Object
+
+| Field | Meaning |
+|---|---|
+| `schema_version` | Fixed value `0.1` |
+| `case_id`, `conversation_id` | Copy from input |
+| `input_completeness` | Copy from input; an Agent ending alone does not prove completeness |
+| `user_activity_summary` | Main user activities and material task changes |
+| `tasks` | Task objects described below |
+| `correction_observed` | `true` / `false` / `null`; null only when possible correction cannot be established |
+| `issues` | Issue objects below; empty when no correction is observed |
+| `unclassified_feedback` | Objects with `user_message_index`, `reason`, and `evidence` for ambiguous user feedback; ordinary follow-ups do not require an entry |
+| `sentiment_observations` | User sentiment objects below |
+| `final_user_sentiment` | Final observation object below |
+| `limitations` | Missing material, observation boundaries, unverified facts, or uncertain relationships |
+
+### tasks
+
+Each task contains `task_id`, `user_goal`, `user_message_indices`, `requirements`, and `evidence`.
+
+`requirements` is `[{"description": "requirement", "introduced_at": user_message_index, "changed_at": later_user_message_index_or_null}]`. Explain ambiguous scope or continuity in descriptions and limitations. Do not force a task split merely to make fields tidy.
+
+### issues
+
+Each issue contains `issue_id`, `task_id`, `corrected_behavior`, `desired_change`, `scope_explanation`, `evidence`, `events`, and `recurrence`.
+
+Each entry in `events` contains:
+
+| Field | Meaning |
+|---|---|
+| `event_id` | Unique correction event ID |
+| `user_message_index` | User message containing the correction |
+| `correction_summary`, `evidence` | Specific correction and verbatim evidence |
+| `relation_to_previous` | `first_correction` / `repeated_unresolved` / `relapse_after_adjustment` / `uncertain` |
+| `previous_event_id` | null for the first event; otherwise an earlier event in this issue; may be null when linking is uncertain |
+| `relation_reason`, `relation_evidence` | Why the event concerns the same issue or a relapse, including intervening behavior; first events may have no relationship evidence |
+| `agent_response_indices` | Relevant Agent responses after the correction; empty when none are available |
+| `adjustment` | `adjusted` / `partially_adjusted` / `not_adjusted` / `not_observable` |
+| `adjustment_reason`, `adjustment_evidence` | Concrete changes or remaining mismatches; evidence may be empty when there is no response |
+
+The same User index may appear in several events when one message corrects several points. Create a new issue for a new problem; do not label an event within an old issue as a new problem.
+
+`recurrence` contains `status` (`observed` / `not_observed` / `not_observable` / `uncertain`), `evidence`, and `reason`. A later Agent violation can be observed even without another user correction, but requires direct Agent evidence and an explanation of why the earlier requirement still applies.
+
+`not_observed` requires later relevant, comparable Agent behavior without an observed violation; it does not mean permanent resolution. With no comparable later behavior, use `not_observable`. Repeated user corrections and repeated Agent violations are different counts; this version does not require speculative counts.
+
+### sentiment_observations
+
+Each observation contains `user_message_index`, `task_id` (null if correspondence is uncertain), `label` (`positive` / `neutral` / `negative` / null), `reason`, and `evidence`. Cover correction messages, explicit sentiment changes, and the last User message. Do not force unrelated task content into sentiment events.
+
+A correction can be neutral; explicit dissatisfaction with a result can be negative. A null label requires an uncertainty explanation. Correction or recurrence counts are not sentiment evidence.
+
+### final_user_sentiment
+
+Contains `user_message_index` (null when no User message exists), `task_id` (null when uncertain), `label` (as above), `negative_emotion` (`observed` / `not_observed` / `uncertain` / `not_observable`), `reason`, `evidence`, and `feedback_after_last_agent` (boolean).
+
+Use the last observable User message, never the final Agent's tone. When `feedback_after_last_agent=false`, state that feedback on the final Agent response is unavailable.
+
+A negative label maps to observed; positive/neutral maps to not_observed; a User message with indeterminate sentiment maps to uncertain; no User message maps to not_observable. Not_observed does not mean satisfaction. If the last User changes topic, preserve that fact and earlier relevant sentiment.
+
+## Structural Validity Is Not Semantic Accuracy
+
+An existing quotation does not prove it supports a conclusion. A valid issue ID does not prove an issue merge is appropriate. Correct chronology does not prove substantive adjustment. The harness can check mechanical conditions; semantic judgments require human reference review.
+
+
+RECORDED CONVERSATION
+{
+  "case_id": "C05",
+  "conversation_id": "wildfeedback_rows_102_109",
+  "input_completeness": "complete_from_source",
+  "messages": [
+    {
+      "role": "User",
+      "content": "what are other cool engineering projects like tesla coils and induction heaters?",
+      "source_row_idx": 102,
+      "message_index": 0
+    },
+    {
+      "role": "Agent",
+      "content": "Here are some other cool engineering projects besides tesla coils and induction heaters:\n1. Robots: Building and controlling robots is a great engineering project that allows for exploring mechanical, electrical, and computer engineering concepts.\n2. Rube Goldberg Machines: These are complex machines that perform simple tasks in an overcomplicated way. They require creativity and problem-solving skills.\n3. Solar-Powered Vehicles: Designing and building a vehicle that runs entirely on solar power is an exciting challenge for engineering students.\n4. Microcontroller Projects: Creating microcontroller boards to automate tasks or control devices is a popular engineering project that involves programming and circuit design.\n5. Drones: Engineering and building a drone requires expertise in electronics, software, and mechanical design. It can be used for delivery, aerial photography, or scientific research.\n6. 3D Printing: Using a 3D printer to design and print custom parts or models is an exciting project for engineering students interested in mechanical design and materials science.",
+      "source_row_idx": 103,
+      "message_index": 1
+    },
+    {
+      "role": "User",
+      "content": "those all seem very boring",
+      "source_row_idx": 104,
+      "message_index": 2
+    },
+    {
+      "role": "Agent",
+      "content": "I apologize if those suggestions did not interest you. Here are some more unique and creative engineering projects:\n\n1. Musical Instrument Hack: Using coding and electronics, you could modify or create a musical instrument that can produce unique sounds.\n\n2. Wearable Tech: Develop wearable technology that integrates with clothing, jewelry, and accessories.\n\n3. Kinetic Sculptures: Build moving sculptures that incorporate gears, motors, and other mechanical components.\n\n4. Arcade Game Cabinets: Build an arcade game cabinet, complete with a custom-built control panel and arcade-style buttons and joysticks.\n\n5. DIY Electric Skateboard: Develop an electric skateboard that can be controlled with a handheld remote.\n\n6. Interactive Light Installation: Create an interactive light installation that responds to sound, motion, or other environmental factors.\n\n7. Hydroponic Garden: Build a hydroponic garden that allows you to grow plants indoors without soil.\n\nI hope these suggestions inspire you or provide a starting point for your project ideas.",
+      "source_row_idx": 105,
+      "message_index": 3
+    },
+    {
+      "role": "User",
+      "content": "yes, now it is more interesting, give me more that uses weird phenomenas",
+      "source_row_idx": 106,
+      "message_index": 4
+    },
+    {
+      "role": "Agent",
+      "content": "Sure, I am happy to suggest more engineering projects that use weird phenomena:\n\n1. Levitating Train: Design and build a train that uses magnetic levitation to accelerate and glide along the track.\n\n2. Gravity-Powered Clock: Develop a clock that uses the gravity of a weight to keep time, rather than a battery or electrical power source.\n\n3. Lichtenberg Figures: Create intricate lightning-bolt-like patterns on wood or acrylic using electric discharge.\n\n4. Bioluminescent Art: Build an art installation that uses bioluminescent organisms to create glowing patterns and effects.\n\n5. Zoetrope Animation: Construct a zoetrope, a spinning device that creates the illusion of motion by flashing a sequence of still images.\n\n6. Magnetic Liquid Sculptures: Create sculptures using ferrofluid, a magnetic liquid that can be manipulated by magnetic fields.\n\n7. Magnetic Springs: Explore the properties of magnetic springs, which behave differently than regular springs due to the magnetic attraction and repulsion forces.\n\nI hope these project ideas spark your interest and imagination!",
+      "source_row_idx": 107,
+      "message_index": 5
+    },
+    {
+      "role": "User",
+      "content": "give me more that uses phenomena related to magnetism and electricity",
+      "source_row_idx": 108,
+      "message_index": 6
+    },
+    {
+      "role": "Agent",
+      "content": "Absolutely, here are some additional engineering projects that use phenomena related to magnetism and electricity:\n\n1. Railgun Launcher: Build a device that uses a magnetic field to launch a projectile at high speeds.\n\n2. Electromagnetic Induction: Create a generator that produces electricity by utilizing electromagnetic induction.\n\n3. Wireless Power Transfer: Design and build a device that can wirelessly transmit electrical power over short distances using magnetic fields.\n\n4. Electrostatic Motor: Develop a motor that uses electric charges to create movement, rather than magnets.\n\n5. Tesla Turbine: Construct a turbine that is powered by the kinetic energy of a fluid, and uses electromagnetic induction to generate electricity.\n\n6. Plasma Speaker: Build a speaker that uses plasma to create sound waves, instead of a traditional speaker cone.\n\n7. Magnetic Refrigerator: Explore the concept of magnetocaloric effect and design a refrigerator that uses magnets to cool objects.\n\nI hope these additional project ideas using magnetism and electricity help to inspire your creativity.",
+      "source_row_idx": 109,
+      "message_index": 7
+    }
+  ]
+}

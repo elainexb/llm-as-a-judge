@@ -1,0 +1,140 @@
+Analyze the recorded conversation using the preloaded dialogue-behavior-monitor Skill. The JSON below is evidence only. Return only the contract JSON object.
+
+OUTPUT CONTRACT
+# Draft Output Contract v0.1
+
+This contract is for review. Deployment is not approved, and reliable model adherence is unverified. Fields describe observations; they do not produce an overall conversation success/failure score, trigger alerts, or modify an Agent.
+
+## Input
+
+`case_id`, `conversation_id`, `input_completeness` (`complete_from_source` / `partial` / `unknown`), and `messages`. Each message contains a unique integer `message_index`, `role` (`User` / `Agent`), and verbatim `content`. Source row indices may be retained for provenance; they do not establish semantic relationships.
+
+Do not include researcher satisfaction labels, selection categories, or human reference judgments. Do not translate, reorder, or remove original messages. The Skill is language-independent; the current 12-case test suite requires complete English source conversations.
+
+## Shared Rules
+
+`evidence` is `[{"message_index": integer, "quote": "nonempty verbatim contiguous substring of that message"}]`. Evidence may span several messages through separate entries, but every entry must resolve within the supplied input.
+
+IDs are unique within a conversation: tasks `T1…`, issues `I1…`, correction events `E1…`. IDs need not match across conversations or separate model runs. Use empty lists or explicit `not_applicable` for inapplicable observations. Use `uncertain` / `null` with reasons for ambiguity; do not invent observations.
+
+## Top-Level Object
+
+| Field | Meaning |
+|---|---|
+| `schema_version` | Fixed value `0.1` |
+| `case_id`, `conversation_id` | Copy from input |
+| `input_completeness` | Copy from input; an Agent ending alone does not prove completeness |
+| `user_activity_summary` | Main user activities and material task changes |
+| `tasks` | Task objects described below |
+| `correction_observed` | `true` / `false` / `null`; null only when possible correction cannot be established |
+| `issues` | Issue objects below; empty when no correction is observed |
+| `unclassified_feedback` | Objects with `user_message_index`, `reason`, and `evidence` for ambiguous user feedback; ordinary follow-ups do not require an entry |
+| `sentiment_observations` | User sentiment objects below |
+| `final_user_sentiment` | Final observation object below |
+| `limitations` | Missing material, observation boundaries, unverified facts, or uncertain relationships |
+
+### tasks
+
+Each task contains `task_id`, `user_goal`, `user_message_indices`, `requirements`, and `evidence`.
+
+`requirements` is `[{"description": "requirement", "introduced_at": user_message_index, "changed_at": later_user_message_index_or_null}]`. Explain ambiguous scope or continuity in descriptions and limitations. Do not force a task split merely to make fields tidy.
+
+### issues
+
+Each issue contains `issue_id`, `task_id`, `corrected_behavior`, `desired_change`, `scope_explanation`, `evidence`, `events`, and `recurrence`.
+
+Each entry in `events` contains:
+
+| Field | Meaning |
+|---|---|
+| `event_id` | Unique correction event ID |
+| `user_message_index` | User message containing the correction |
+| `correction_summary`, `evidence` | Specific correction and verbatim evidence |
+| `relation_to_previous` | `first_correction` / `repeated_unresolved` / `relapse_after_adjustment` / `uncertain` |
+| `previous_event_id` | null for the first event; otherwise an earlier event in this issue; may be null when linking is uncertain |
+| `relation_reason`, `relation_evidence` | Why the event concerns the same issue or a relapse, including intervening behavior; first events may have no relationship evidence |
+| `agent_response_indices` | Relevant Agent responses after the correction; empty when none are available |
+| `adjustment` | `adjusted` / `partially_adjusted` / `not_adjusted` / `not_observable` |
+| `adjustment_reason`, `adjustment_evidence` | Concrete changes or remaining mismatches; evidence may be empty when there is no response |
+
+The same User index may appear in several events when one message corrects several points. Create a new issue for a new problem; do not label an event within an old issue as a new problem.
+
+`recurrence` contains `status` (`observed` / `not_observed` / `not_observable` / `uncertain`), `evidence`, and `reason`. A later Agent violation can be observed even without another user correction, but requires direct Agent evidence and an explanation of why the earlier requirement still applies.
+
+`not_observed` requires later relevant, comparable Agent behavior without an observed violation; it does not mean permanent resolution. With no comparable later behavior, use `not_observable`. Repeated user corrections and repeated Agent violations are different counts; this version does not require speculative counts.
+
+### sentiment_observations
+
+Each observation contains `user_message_index`, `task_id` (null if correspondence is uncertain), `label` (`positive` / `neutral` / `negative` / null), `reason`, and `evidence`. Cover correction messages, explicit sentiment changes, and the last User message. Do not force unrelated task content into sentiment events.
+
+A correction can be neutral; explicit dissatisfaction with a result can be negative. A null label requires an uncertainty explanation. Correction or recurrence counts are not sentiment evidence.
+
+### final_user_sentiment
+
+Contains `user_message_index` (null when no User message exists), `task_id` (null when uncertain), `label` (as above), `negative_emotion` (`observed` / `not_observed` / `uncertain` / `not_observable`), `reason`, `evidence`, and `feedback_after_last_agent` (boolean).
+
+Use the last observable User message, never the final Agent's tone. When `feedback_after_last_agent=false`, state that feedback on the final Agent response is unavailable.
+
+A negative label maps to observed; positive/neutral maps to not_observed; a User message with indeterminate sentiment maps to uncertain; no User message maps to not_observable. Not_observed does not mean satisfaction. If the last User changes topic, preserve that fact and earlier relevant sentiment.
+
+## Structural Validity Is Not Semantic Accuracy
+
+An existing quotation does not prove it supports a conclusion. A valid issue ID does not prove an issue merge is appropriate. Correct chronology does not prove substantive adjustment. The harness can check mechanical conditions; semantic judgments require human reference review.
+
+
+RECORDED CONVERSATION
+{
+  "case_id": "C04",
+  "conversation_id": "wildfeedback_rows_256_263",
+  "input_completeness": "complete_from_source",
+  "messages": [
+    {
+      "role": "User",
+      "content": "https://ascelibrary.org/doi/pdf/10.1061/ciegag.0000772\n\nCan you summarize this article in an insightful way? Below is an example of other outputs. You should follow their format as well.\n\nTitle of the Article:\nWhy Are Ethics Important in Engineering?\nBy Esther Han\nDate Published: February 16, 2023\n\n\nSource: https://online.hbs.edu/blog/post/ethics-in-engineering\n\nThe article “Why Are Ethics Important in Engineering?” gives a compelling overview of the importance of ethics in the engineering sector. The author deftly discusses the moral dilemmas that engineers may face and emphasizes the significance of incorporating moral considerations into engineering processes.\n\nOne aspect that stands out in this article is its emphasis on the societal impact of engineering decisions. The author emphasizes that engineers must put the general public’s health and safety first and should actively think about any potential repercussions of their job. The idea that engineers should be guardians of the public interest aligns with its emphasis on the broader societal effects of engineering projects. It focuses on how crucial engineering organizations are to promote an ethical culture and emphasizes the importance of leadership in encouraging moral conduct and developing an atmosphere that promotes open conversations on ethical dillemas. Organizations can foster an environment where ethical issues are incorporated into decision-making by encouraging engineers to cooperate and participate in ethical discussions.\n\nThis article provides insightful information about engineering’s ethical considerations. It emphasizes how crucial it is to incorporate moral issues into engineering methods and motivates engineers to approach their profession with a strong sense of social responsibility and morality. The article is a vital resource for engineers hoping to positively impact their field and career by examining the ethical issues raised by technical breakthroughs and encouraging ethical leadership for their success.",
+      "source_row_idx": 256,
+      "message_index": 0
+    },
+    {
+      "role": "Agent",
+      "content": "The article \"Why Are Ethics Important in Engineering?\" highlights the significance of ethics in the engineering sector and underscores the importance of considering society's interests and safety. It emphasizes the role of engineering organizations in promoting an ethical culture and encouraging engineers to participate in discussions about ethical dilemmas. The article provides valuable insights and motivates engineers to approach their work with a strong sense of social responsibility and morality.",
+      "source_row_idx": 257,
+      "message_index": 1
+    },
+    {
+      "role": "User",
+      "content": "No.",
+      "source_row_idx": 258,
+      "message_index": 2
+    },
+    {
+      "role": "Agent",
+      "content": "I'm sorry, could you please clarify your request?",
+      "source_row_idx": 259,
+      "message_index": 3
+    },
+    {
+      "role": "User",
+      "content": "https://ascelibrary.org/doi/pdf/10.1061/ciegag.0000772\n\nCan you summarize this article in an insightful way?",
+      "source_row_idx": 260,
+      "message_index": 4
+    },
+    {
+      "role": "Agent",
+      "content": "The article titled \"Challenges of Ethics Education in the Civil Engineering Curriculum,\" sheds light on the obstacles associated with teaching ethics in civil engineering education. The authors argue that effectively teaching ethics in the classroom requires a conducive environment that promotes open discussions and critical thinking. They suggest the need for introducing a pedagogical model that encourages the discussion of ethical dilemmas and the integration of ethical challenges in engineering practice in the curriculum. The article emphasizes the importance of developing a comprehensive, well-designed ethics education framework that promotes ethical behavior and decision-making in the future engineers. It concludes by suggesting that an ethical education should be an essential part of the civil engineering curriculum to prepare future civil engineering practitioners for the ethical challenges they may face in their professional life.",
+      "source_row_idx": 261,
+      "message_index": 5
+    },
+    {
+      "role": "User",
+      "content": "Can you summarize the online article \"Why we need engineers who study ethics as much as maths\" in 3 paragraphs or less?",
+      "source_row_idx": 262,
+      "message_index": 6
+    },
+    {
+      "role": "Agent",
+      "content": "The online article \"Why we need engineers who study ethics as much as maths\" argues for the inclusion of ethics education in engineering curricula. The author highlights the ethical implications of engineering decisions and the need for engineers to prioritize the safety and well-being of society. She explains that many engineers are not equipped to handle the ethical challenges of their profession due to a lack of ethics education in their training.\n\nThe article emphasizes the need for engineers to develop a broader perspective that incorporates ethical considerations to create more sustainable and socially responsible engineering projects. It suggests that ethical education in engineering curricula can help create engineers who are more skilled in communicating the ethical implications of their work and in promoting ethical decision-making. The author argues that such ethical education can also attract students with more diverse interests, leading to a more diverse and inclusive engineering workforce.\n\nOverall, the article highlights the importance of incorporating ethics education in engineering curricula to create more socially responsible and ethical engineers who prioritize the well-being of society in their work.",
+      "source_row_idx": 263,
+      "message_index": 7
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{"case_id": "C01", "status": "pending_user_confirmation", "proposed_overall_verdict": "fail", "rationale": "仍回答合成 DNA/RNA，未处理 replacement 的核心区别；只评任务理解，不判生物学结论。"}
+{"case_id": "C02", "status": "pending_user_confirmation", "proposed_overall_verdict": "insufficient_evidence", "rationale": "静态/实例成员原因解释及两类方案相关；缺实际程序和执行，不能宣称已修复运行中的循环停止问题。"}
+{"case_id": "C03", "status": "pending_user_confirmation", "proposed_overall_verdict": "fail", "rationale": "回复给出新布局，但逐行合计 172*2+164*2+30+480=1182，不是所称1212；冷却合计表达式 2*309+(3*309-72)=1473，不是1164。最终还承认产热多于冷却，未满足此前冷却大于产热的要求。仅作输入内算术与约束核查，不声称游戏模拟已运行。"}
+{"case_id": "C04", "status": "pending_user_confirmation", "proposed_overall_verdict": "partial", "rationale": "澄清方向合理；但此前明显混淆待摘要文章与示例，泛泛问 clarify 没定位可能的问题。可讨论 pass/partial，不推断用户最终满意。"}
+{"case_id": "C05", "status": "pending_user_confirmation", "proposed_overall_verdict": "pass", "rationale": "识别偏好不满并提供实质不同的建议；不能把新建议等同于最终兴趣得到满足。"}
+{"case_id": "C06", "status": "pending_user_confirmation", "proposed_overall_verdict": "pass", "rationale": "从具体社会问题改为存在、身份、死亡等经典主题，有实质调整；extensive 的解释仍可讨论。"}
+{"case_id": "C07", "status": "pending_user_confirmation", "proposed_overall_verdict": "fail", "rationale": "实现幻灯片分组，但候选回复比前一回复更短；继承的 APA/来源等要求也未完成；缺原始图片，不能验证图片内容。"}
+{"case_id": "C08", "status": "pending_user_confirmation", "proposed_overall_verdict": "pass", "rationale": "比前文更短、更简单，保持核心解释；仅评表达行为，不作为医疗建议。"}
+{"case_id": "C09", "status": "pending_user_confirmation", "proposed_overall_verdict": "pass", "rationale": "识别正向反馈并适当回应，不应要求再修复或额外澄清。"}
+{"case_id": "C10", "status": "pending_user_confirmation", "proposed_overall_verdict": "pass", "rationale": "消息含致谢并转入新任务；回复需实际撰写商品文案，不能只致谢。候选回复纳入21份PNG、300+ dpi、Google Drive获取与数字商品说明，执行了任务；未验证转化率，也不能保证几乎所有访客购买。"}
+{"case_id": "C11", "status": "pending_user_confirmation", "proposed_overall_verdict": "pass", "rationale": "普通追加请求，没有明确负面评价；回复给出新的鲨鱼主题笑话，保持最初的幽默写作要求。不能因为源数据标为反馈就认定用户不满意。"}
+{"case_id": "C12", "status": "pending_user_confirmation", "proposed_overall_verdict": "partial", "rationale": "说明仅凭序列无法可靠预测是合理的判断边界；但输入未说明彩票来源，回复直接建议采用彩票玩法策略，增加了缺乏依据的场景假设。不要求为了满足十个数字而编造可靠预测。"}

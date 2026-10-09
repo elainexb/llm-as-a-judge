@@ -1,0 +1,26 @@
+{
+  "policy": "one active case per source conversation; English only; preserve original messages",
+  "replaced_cases": [
+    {
+      "case_id": "C10",
+      "removed_source_conversation_id": "wildfeedback_rows_102_109",
+      "removed_case_sha256": "c89e49a159a51e664a294394de16f3eec8158915def2e7ff24f67e0d9e31e7fe",
+      "reason": "source conversation duplicates earlier active cases",
+      "replacement_source_conversation_id": "wildfeedback_rows_1448_1453"
+    },
+    {
+      "case_id": "C11",
+      "removed_source_conversation_id": "wildfeedback_rows_102_109",
+      "removed_case_sha256": "b1c9a9ef1fd9bb60b422b36bd2b7748d37aaede1b8ea7fbe859be31c7ffdd34a",
+      "reason": "source conversation duplicates earlier active cases",
+      "replacement_source_conversation_id": "wildfeedback_rows_1012_1019"
+    },
+    {
+      "case_id": "C12",
+      "removed_source_conversation_id": "wildfeedback_rows_256_263",
+      "removed_case_sha256": "13805ea5cac809ff667db193454d7e424cec9b5f609340ea501d319e9e7eeb1f",
+      "reason": "source conversation duplicates earlier active cases",
+      "replacement_source_conversation_id": "wildfeedback_rows_1338_1349"
+    }
+  ]
+}

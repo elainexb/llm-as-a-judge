@@ -1,0 +1,29 @@
+{
+  "normal_actual_conversations": 24,
+  "fault_injection_checks": {
+    "unpaired_ending_rejected": true,
+    "source_gap_rejected": true,
+    "truncated_source_rejected": true,
+    "invalid_role_rejected": true
+  },
+  "limitation": "Fault injection verifies rejection behavior only; no model invocation or source-page independent text comparison.",
+  "active_cases": 12,
+  "active_source_conversations": 12,
+  "language_filter": "English only",
+  "non_english_active_dialogue_messages": 0,
+  "full_source_conversation_language_scope": true,
+  "replaced_cases": [
+    "C03",
+    "C10"
+  ],
+  "post_replacement_text_preservation": "passed",
+  "post_replacement_future_message_exclusion": "passed",
+  "unique_source_conversations": "passed",
+  "latest_replaced_cases": [
+    "C10",
+    "C11",
+    "C12"
+  ],
+  "post_replacement_input_and_manifest_match": "passed",
+  "input_characters": 88199
+}

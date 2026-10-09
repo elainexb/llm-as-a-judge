@@ -1,0 +1,144 @@
+{
+  "status": "passed",
+  "native_discovery": true,
+  "native_registration": [
+    "prepare_dialogue",
+    "get_judge_context",
+    "validate_judgment",
+    "inspect_judge_run"
+  ],
+  "native_dispatch": true,
+  "model_tool_definitions": true,
+  "host_function_call_dispatch": true,
+  "emitted_function_names": [
+    "get_judge_context",
+    "inspect_judge_run",
+    "prepare_dialogue",
+    "validate_judgment"
+  ],
+  "tool_definitions": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_judge_context",
+        "description": "Get one page of a successfully prepared run. The pages together contain the pinned Judge Skill, output contract and full conversation. Return text, page_count, missing_pages, context_complete and next_action. Retrieve every missing page in order before judging; a returned page is evidence of delivery, not understanding. Reject unknown runs, changed artifacts, invalid pages and another session's run.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$",
+              "description": "Opaque run_id returned by prepare_dialogue; reuse it for this case only."
+            },
+            "page": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Zero-based page index. Start at the next_action.page from preparation, then use missing_pages."
+            }
+          },
+          "required": [
+            "run_id",
+            "page"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "inspect_judge_run",
+        "description": "Read the execution audit for a run, including failed preparation or submission. Return steps with actual states/call/failure counts, missing_context_pages, recent_failures, status and artifact paths. Report these observations to the user. Integrity failures prevent a completion claim. Model understanding, final response delivery and human acceptance are not inferred from tool calls.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$",
+              "description": "Run ID returned by preparation, including a run that later failed."
+            }
+          },
+          "required": [
+            "run_id"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "prepare_dialogue",
+        "description": "Start a new run for the user-selected case. Extract the complete original dialogue, remove dataset labels, and pin the input, Judge Skill and output contract. Return run_id, message_count, page_count, input_path, status and next_action. Outputs are stored by the tool in the configured project; no output path is needed. A failed preparation returns its run_id and error so inspect_judge_run can diagnose it. Makes no model calls.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "case_id": {
+              "type": "string",
+              "pattern": "^C[0-9]{2}$",
+              "description": "Case ID requested by the user, from the selected suite C01 through C12. Do not invent a case."
+            }
+          },
+          "required": [
+            "case_id"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "validate_judgment",
+        "description": "Submit the judgment produced by the current Hermes model and run mechanical validation. Requires successful preparation and every context page. Save the original submission and validation report without overwrite or repair. Return status, error_count, errors, artifact paths and next_action. Malformed or unsupported output is retained as a failed result. Only one submission is allowed per run. A pass means validated_pending_review, not semantic correctness; inspect the run next.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$",
+              "description": "Run ID whose complete context was obtained for this judgment."
+            },
+            "judgment_json": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200000,
+              "description": "Original judgment serialized as JSON text following the output contract in the context. This argument is a string, not a nested object or file path. Preserve its text; do not add Markdown fences."
+            }
+          },
+          "required": [
+            "run_id",
+            "judgment_json"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ],
+  "validation": "validated_pending_review",
+  "audit_steps": {
+    "prepare": {
+      "state": "succeeded",
+      "calls": 1,
+      "failures": 0
+    },
+    "context": {
+      "state": "succeeded",
+      "calls": 6,
+      "failures": 0
+    },
+    "submission": {
+      "state": "succeeded",
+      "calls": 1,
+      "failures": 0
+    },
+    "validate": {
+      "state": "succeeded",
+      "calls": 1,
+      "failures": 0
+    }
+  },
+  "model_calls": 0,
+  "profile_modified": false,
+  "native_unload": true
+}

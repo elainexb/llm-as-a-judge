@@ -1,0 +1,49 @@
+{
+  "case_id": "C06",
+  "source_conversation_id": "wildfeedback_rows_1324_1329",
+  "source_dataset": "microsoft/WildFeedback",
+  "source_config": "sat_dsat_annotation",
+  "source_split": "train",
+  "source_row_start": 1324,
+  "source_row_end_inclusive": 1329,
+  "feedback_message_index": 4,
+  "candidate_response_index": 5,
+  "messages": [
+    {
+      "message_index": 0,
+      "role": "User",
+      "content": "Name 10 problems that can be raised in the novel",
+      "source_row_idx": 1324
+    },
+    {
+      "message_index": 1,
+      "role": "Agent",
+      "content": "1. Racism\n2. Poverty\n3. Mental illness\n4. Sexism\n5. Police brutality\n6. Addiction\n7. Domestic violence\n8. Immigration policies\n9. Educational inequality\n10. Environmental issues.",
+      "source_row_idx": 1325
+    },
+    {
+      "message_index": 2,
+      "role": "User",
+      "content": "These are too base problems, let's do something more global",
+      "source_row_idx": 1326
+    },
+    {
+      "message_index": 3,
+      "role": "Agent",
+      "content": "Sure, here are 10 global problems that could be raised in a novel:\n\n1. Climate change and environmental degradation\n2. Economic inequality and social injustice\n3. Political corruption and authoritarianism\n4. Religious conflict and extremism\n5. Weapons proliferation and global security threats\n6. Pandemics and public health crises\n7. Immigration and refugee crises\n8. Human rights violations and discrimination\n9. Technological advancements and their impact on society\n10. Natural disasters and their aftermath.",
+      "source_row_idx": 1327
+    },
+    {
+      "message_index": 4,
+      "role": "User",
+      "content": "This is also low, the thoughts are more extensive and classic",
+      "source_row_idx": 1328
+    },
+    {
+      "message_index": 5,
+      "role": "Agent",
+      "content": "I apologize for not meeting your expectations earlier. Here are 10 major themes that could be explored in a novel:\n\n1. Existentialism and the meaning of human existence\n2. Identity and self-discovery\n3. Love and relationships\n4. Death and mortality\n5. Time and the passage of life\n6. Society and the role of the individual within it\n7. Power and its corrupting influence\n8. War and its impact on humanity\n9. Nature and the relationship between humans and the environment\n10. Freedom and its limits.",
+      "source_row_idx": 1329
+    }
+  ]
+}

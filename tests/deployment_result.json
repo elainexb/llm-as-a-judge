@@ -1,0 +1,76 @@
+{
+  "status": "deployed_host_verified",
+  "timestamp_utc": "20261009T141035Z",
+  "profile": "/Users/xuebai/.hermes/profiles/data-analyst",
+  "plugin_path": "/Users/xuebai/.hermes/profiles/data-analyst/plugins/dialogue-judge",
+  "backup_config": "/Users/xuebai/.hermes/profiles/data-analyst/backups/dialogue-judge-20261009T141035Z/config.yaml",
+  "config_before_sha256": "352bafbc9eb96659f9b7a2203871115a708d550ed4a86e1d898a0a29223ff7cf",
+  "config_after_sha256": "894d0472be7a9946ba0ed0c9d3d0f5d45a8a4497fcd3a3edee8e7d9fad62c3f4",
+  "configuration_changed_only": [
+    "plugins.enabled",
+    "plugins.entries.dialogue-judge.settings.project_dir"
+  ],
+  "plugin_files": {
+    "plugin.yaml": "2854250ac6bf6bb2e65ac1ecaf712ddbd8ba0020dbdc399ac4b7585ea7e400d7",
+    "__init__.py": "e2b65bbf24ac110f40775668a9ab3354a9eba22b43c8604d579f3a4fdef8fef5",
+    "runtime.py": "7f2e7226ec52a5ce72f4c65685981e16c541ccfad5c92be9561fbf681fe91564"
+  },
+  "toolset_enabled_for_cli": true,
+  "registered_tools": [
+    "prepare_dialogue",
+    "get_judge_context",
+    "validate_judgment",
+    "inspect_judge_run"
+  ],
+  "model_calls": 0,
+  "smoke_test": {
+    "case_id": "C08",
+    "run_id": "a006277bdcd94f0db727283dbf6861a3",
+    "purpose": "Host deployment smoke test; no model judgment submitted",
+    "audit": {
+      "run_id": "a006277bdcd94f0db727283dbf6861a3",
+      "case_id": "C08",
+      "status": "incomplete",
+      "steps": {
+        "prepare": {
+          "state": "succeeded",
+          "calls": 1,
+          "failures": 0
+        },
+        "context": {
+          "state": "succeeded",
+          "calls": 3,
+          "failures": 0
+        },
+        "submission": {
+          "state": "not_executed",
+          "calls": 0,
+          "failures": 0
+        },
+        "validate": {
+          "state": "not_executed",
+          "calls": 0,
+          "failures": 0
+        }
+      },
+      "missing_context_pages": [],
+      "ledger_path": "/Users/xuebai/Documents/ChatGPT/llm as a judge/runs/judge-plugin/a006277bdcd94f0db727283dbf6861a3/events.jsonl",
+      "artifacts": {
+        "run.json": "/Users/xuebai/Documents/ChatGPT/llm as a judge/runs/judge-plugin/a006277bdcd94f0db727283dbf6861a3/run.json",
+        "context.txt": "/Users/xuebai/Documents/ChatGPT/llm as a judge/runs/judge-plugin/a006277bdcd94f0db727283dbf6861a3/context.txt"
+      },
+      "event_count": 8,
+      "recent_failures": [],
+      "runtime_identity": {
+        "session_id": "deployment-smoke-20261009T141035Z",
+        "task_id": "deployment-smoke"
+      },
+      "identity_available": true,
+      "model_understanding": "not_observable",
+      "final_assistant_report": "not_observable",
+      "human_review": "pending"
+    }
+  },
+  "live_session_visibility": "requires fresh profile session",
+  "semantic_review": "not_run"
+}

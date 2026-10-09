@@ -1,0 +1,20 @@
+{
+  "case_count": 1,
+  "cases": [
+    {
+      "case_id": "C08",
+      "conversation_id": "wildfeedback_rows_1516_1521",
+      "message_count": 6,
+      "sha256": "0dd0a66c84bba334c6c4eb07299baaeb6af01772b9fead0def8e5b3cac624666"
+    }
+  ],
+  "manifest_sha256": "06202cc2336047f7266f1a09f621b8e989f6913e69b6745059f7d067424f2c07",
+  "pool_sha256": "00bd80887a96e2990be06d39b500333beae242a7a1dbecd99ee89cbb6fe9d3c0",
+  "skill_hashes": {
+    "SKILL.md": "0c947d7aa05a961d74f230d35c6e8d30a30c2daefecca691e66b3f00505edc0a",
+    "references/output-contract.md": "215b36a72bdb1acce1cf3d6164ba3ff383f22821f27a8a4870b20e90408e8c1f"
+  },
+  "contract_sha256": "215b36a72bdb1acce1cf3d6164ba3ff383f22821f27a8a4870b20e90408e8c1f",
+  "completeness_basis": "Saved complete contiguous extractor sessions, with retained source row and turn checks; no new upstream fetch.",
+  "language_basis": "Existing full-source human/agent English review in manifest; not an automatic language classifier."
+}

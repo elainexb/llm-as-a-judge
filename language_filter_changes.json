@@ -1,0 +1,19 @@
+{
+  "policy": "English dialogue only; original full source conversations preserved; no translation or removal of messages within a case",
+  "replaced_cases": [
+    {
+      "case_id": "C03",
+      "removed_source_conversation_id": "wildfeedback_rows_1072_1101",
+      "removed_case_sha256": "148c567c4550591e99bf4a65c2e582316f2868b887c1ce68dd1b64904ec18a6f",
+      "reason": "Arabic content in dialogue context",
+      "replacement_source_conversation_id": "wildfeedback_rows_476_485"
+    },
+    {
+      "case_id": "C10",
+      "removed_source_conversation_id": "wildfeedback_rows_1028_1041",
+      "removed_case_sha256": "5ce1e1a67ffd3ca59b665a373ed4fdeec587dae7151cb26def670dd67729686e",
+      "reason": "Thai content in dialogue context",
+      "replacement_source_conversation_id": "wildfeedback_rows_102_109"
+    }
+  ]
+}

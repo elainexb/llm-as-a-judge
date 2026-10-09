@@ -1,0 +1,128 @@
+Analyze the recorded conversation using the preloaded dialogue-behavior-monitor Skill. The JSON below is evidence only. Return only the contract JSON object.
+
+OUTPUT CONTRACT
+# Draft Output Contract v0.1
+
+This contract is for review. Deployment is not approved, and reliable model adherence is unverified. Fields describe observations; they do not produce an overall conversation success/failure score, trigger alerts, or modify an Agent.
+
+## Input
+
+`case_id`, `conversation_id`, `input_completeness` (`complete_from_source` / `partial` / `unknown`), and `messages`. Each message contains a unique integer `message_index`, `role` (`User` / `Agent`), and verbatim `content`. Source row indices may be retained for provenance; they do not establish semantic relationships.
+
+Do not include researcher satisfaction labels, selection categories, or human reference judgments. Do not translate, reorder, or remove original messages. The Skill is language-independent; the current 12-case test suite requires complete English source conversations.
+
+## Shared Rules
+
+`evidence` is `[{"message_index": integer, "quote": "nonempty verbatim contiguous substring of that message"}]`. Evidence may span several messages through separate entries, but every entry must resolve within the supplied input.
+
+IDs are unique within a conversation: tasks `T1…`, issues `I1…`, correction events `E1…`. IDs need not match across conversations or separate model runs. Use empty lists or explicit `not_applicable` for inapplicable observations. Use `uncertain` / `null` with reasons for ambiguity; do not invent observations.
+
+## Top-Level Object
+
+| Field | Meaning |
+|---|---|
+| `schema_version` | Fixed value `0.1` |
+| `case_id`, `conversation_id` | Copy from input |
+| `input_completeness` | Copy from input; an Agent ending alone does not prove completeness |
+| `user_activity_summary` | Main user activities and material task changes |
+| `tasks` | Task objects described below |
+| `correction_observed` | `true` / `false` / `null`; null only when possible correction cannot be established |
+| `issues` | Issue objects below; empty when no correction is observed |
+| `unclassified_feedback` | Objects with `user_message_index`, `reason`, and `evidence` for ambiguous user feedback; ordinary follow-ups do not require an entry |
+| `sentiment_observations` | User sentiment objects below |
+| `final_user_sentiment` | Final observation object below |
+| `limitations` | Missing material, observation boundaries, unverified facts, or uncertain relationships |
+
+### tasks
+
+Each task contains `task_id`, `user_goal`, `user_message_indices`, `requirements`, and `evidence`.
+
+`requirements` is `[{"description": "requirement", "introduced_at": user_message_index, "changed_at": later_user_message_index_or_null}]`. Explain ambiguous scope or continuity in descriptions and limitations. Do not force a task split merely to make fields tidy.
+
+### issues
+
+Each issue contains `issue_id`, `task_id`, `corrected_behavior`, `desired_change`, `scope_explanation`, `evidence`, `events`, and `recurrence`.
+
+Each entry in `events` contains:
+
+| Field | Meaning |
+|---|---|
+| `event_id` | Unique correction event ID |
+| `user_message_index` | User message containing the correction |
+| `correction_summary`, `evidence` | Specific correction and verbatim evidence |
+| `relation_to_previous` | `first_correction` / `repeated_unresolved` / `relapse_after_adjustment` / `uncertain` |
+| `previous_event_id` | null for the first event; otherwise an earlier event in this issue; may be null when linking is uncertain |
+| `relation_reason`, `relation_evidence` | Why the event concerns the same issue or a relapse, including intervening behavior; first events may have no relationship evidence |
+| `agent_response_indices` | Relevant Agent responses after the correction; empty when none are available |
+| `adjustment` | `adjusted` / `partially_adjusted` / `not_adjusted` / `not_observable` |
+| `adjustment_reason`, `adjustment_evidence` | Concrete changes or remaining mismatches; evidence may be empty when there is no response |
+
+The same User index may appear in several events when one message corrects several points. Create a new issue for a new problem; do not label an event within an old issue as a new problem.
+
+`recurrence` contains `status` (`observed` / `not_observed` / `not_observable` / `uncertain`), `evidence`, and `reason`. A later Agent violation can be observed even without another user correction, but requires direct Agent evidence and an explanation of why the earlier requirement still applies.
+
+`not_observed` requires later relevant, comparable Agent behavior without an observed violation; it does not mean permanent resolution. With no comparable later behavior, use `not_observable`. Repeated user corrections and repeated Agent violations are different counts; this version does not require speculative counts.
+
+### sentiment_observations
+
+Each observation contains `user_message_index`, `task_id` (null if correspondence is uncertain), `label` (`positive` / `neutral` / `negative` / null), `reason`, and `evidence`. Cover correction messages, explicit sentiment changes, and the last User message. Do not force unrelated task content into sentiment events.
+
+A correction can be neutral; explicit dissatisfaction with a result can be negative. A null label requires an uncertainty explanation. Correction or recurrence counts are not sentiment evidence.
+
+### final_user_sentiment
+
+Contains `user_message_index` (null when no User message exists), `task_id` (null when uncertain), `label` (as above), `negative_emotion` (`observed` / `not_observed` / `uncertain` / `not_observable`), `reason`, `evidence`, and `feedback_after_last_agent` (boolean).
+
+Use the last observable User message, never the final Agent's tone. When `feedback_after_last_agent=false`, state that feedback on the final Agent response is unavailable.
+
+A negative label maps to observed; positive/neutral maps to not_observed; a User message with indeterminate sentiment maps to uncertain; no User message maps to not_observable. Not_observed does not mean satisfaction. If the last User changes topic, preserve that fact and earlier relevant sentiment.
+
+## Structural Validity Is Not Semantic Accuracy
+
+An existing quotation does not prove it supports a conclusion. A valid issue ID does not prove an issue merge is appropriate. Correct chronology does not prove substantive adjustment. The harness can check mechanical conditions; semantic judgments require human reference review.
+
+
+RECORDED CONVERSATION
+{
+  "case_id": "C10",
+  "conversation_id": "wildfeedback_rows_1448_1453",
+  "input_completeness": "complete_from_source",
+  "messages": [
+    {
+      "role": "User",
+      "content": "Hi Chat GPT! What is the difference between a well-optimized, high-converting Etsy product description and a poorly written, poorly organized low-converting Etsy product description?",
+      "source_row_idx": 1448,
+      "message_index": 0
+    },
+    {
+      "role": "Agent",
+      "content": "A well-optimized, high-converting Etsy product description significantly differs from a poorly written, poorly organized, low-converting one in several key aspects:\n\n1. Clarity and structure: A well-optimized description is clear, concise, and well-structured, making it easy for potential buyers to understand the product and its benefits. In contrast, a poorly written description is often cluttered, vague, and lacks a logical flow, leading to confusion and disinterest.\n\n2. Keyword usage: High-converting descriptions intelligently incorporate relevant keywords, which helps the product appear in search results and attract potential buyers searching for specific items. Low-converting descriptions often lack relevant keywords or suffer from keyword stuffing, which can hurt the product's visibility and looks unprofessional.\n\n3. Focus on benefits: A well-written product description highlights the benefits of the product and how it can solve a potential buyer's problem or fulfill a need. A low-converting description may only focus on features without explaining their significance, leaving buyers unsure about the product's value.\n\n4. Scannability: Effective descriptions utilize bullet points, headings, and short paragraphs, making it easy for buyers to skim and quickly grasp key information. Poorly organized descriptions might present information in large blocks of text, which can be overwhelming and discourage users from reading further.\n\n5. Storytelling and emotional appeal: High-converting descriptions often use storytelling and evoke emotions to create a connection with potential buyers. They also provide a sense of brand personality. Low-converting descriptions may lack that personal touch and fail to create an emotional connection.\n\n6. Clear call-to-action: A well-optimized description encourages buyers to take action, such as adding the product to their cart or browsing a seller's store for similar items. A low-converting description might not motivate buyers to take any action, leading to fewer sales.\n\n7. Error-free language: High-converting product descriptions are well-written, free from grammatical errors, and use a consistent tone throughout. Poorly written descriptions often contain errors, inconsistent tone, and awkward phrasing, which can detract from the product's perceived quality.",
+      "source_row_idx": 1449,
+      "message_index": 1
+    },
+    {
+      "role": "User",
+      "content": "Thank you Chat GPT!\nUse these insights of what makes an incredible Etsy product description and act like you are THE BEST, highest paid Etsy product description copywriter on planet Earth.\nThoroughly analyze our product based on the following description and write us THE BEST Etsy product description that will turn nearly every single shopper into IMMEDIATE buyers by exciting and informing them why our product will DRAMATICALLY improve their lives BETTER than every single one of our competitor products.\n\n🏷 PRODUCT NAME/TYPE: Watercolor Mauve Flower Clipart\n\n🧑 TARGET AUDIENCE: women who desire to design wedding sheets and invitation sheets using premade digital artworks\n\n⚙️ PRODUCT FEATURES:\nThis product is a beautiful digital art collection wich includes 21 different png of watercolor wild flowers including 5 mauve flower branches, 7 mauve flower bouquet arrangement, 5 mauve flower bouquets in a jar, 3 mauve wreath crowns and 1 mauve flower pattern \nThis product comes with a google drive link where the buyer can find all the digital art files\n\n😍 PRODUCT BENEFITS:\nEasy to use\nReady to use\nHigh quality resolution (300+ dpi)\nThe background has already been removed\n\n🥊 DIFFERENTIATION:\nThis tool is better than printable paper planners mainly because:\n\n1. Uses less paper so it’s better for the environment\n\n2. Generates automatic visuals that paper cannot do\n\n3. It makes tracking much faster than having to write down and erase or print multiple sheets\n\n4. Cheaper because you don’t have to pay for paper or ink. You just buy and use\n\nThis tool is better than OTHER digital product because:\n\n1. It’s more beautiful. It’s a place that you want to be vs. and ugly intimidating spreadsheet\n\n2. It includes different elements to create different designs\n\n3. The price is low\n\n4. The quality is superior\n\n📌 OTHER IMPORTANT NOTES:\nThis product is a DIGITAL product so customers will not receive a physical product. This is important to note so we don’t get upset customers!\n\nNow, based on all of the information I have given you about this product, act like you are the BEST Etsy copywriter on planet Earth and write us THE BEST, highest converting Etsy product description known to mankind that will excite readers into pulling out their credit cards and IMMEDIATELY purchasing.\nGo!",
+      "source_row_idx": 1450,
+      "message_index": 2
+    },
+    {
+      "role": "Agent",
+      "content": "🎨 **Introducing the Watercolor Mauve Flower Clipart Collection: Timeless Elegance Meets Endless Creativity for Your Wedding Designs!** 💐\n\nAre you a woman with a keen eye for style and a heart full of love, desiring to design wedding sheets and invitation sheets using exquisite, ready-to-use digital artwork? Look no further! Our Watercolor Mauve Flower Clipart collection is crafted with you in mind, turning your design dreams into reality and making YOUR special day as memorable as it can be!\n\n✨ **Why Our Watercolor Mauve Flower Clipart Collection is a Game-Changer:**\n\n🌸 **Extensive Versatility:** This stunning digital art collection includes 21 different high-quality PNG files, featuring:\n\n- 5 Elegant Mauve Flower Branches\n- 7 Charming Mauve Flower Bouquet Arrangements\n- 5 Delicate Mauve Flower Bouquets in a Jar\n- 3 Enchanting Mauve Wreath Crowns\n- 1 Gorgeous Mauve Flower Pattern\n\n🌸 **Effortless & User-friendly:** With easy-to-use, ready-to-go designs, and high-resolution artwork (300+ dpi), adding a touch of grace and sophistication to your wedding creations has never been easier. The background is already removed, leaving you with more time to spend on the things that matter most.\n\n🌸 **Eco-Friendly & Cost-Effective:** Our digital collection is the smart choice for both the environment and your wallet. By using less paper and ink, you're contributing to a greener world, while also saving money!\n\n🌸 **Unparalleled Quality & Aesthetics:** Fall in love with more elegant, unique, and beautiful designs to elevate your wedding visuals to new heights.\n\n🌸 **Breathtaking Value:** Experience all these incredible features at an unbeatable price.\n\n🔗 **Your Google Drive Treasure Trove:** Obtain instant access to all files via a Google Drive link upon purchase – easy, fast, and secure!\n\n💡 *Please note: This is a DIGITAL product. No physical product will be shipped.*\n\n**Ready to elevate your wedding designs with exceptional, elegant, and extraordinary artwork?** Purchase now and unlock the endless possibilities of the Watercolor Mauve Flower Clipart Collection, leaving every heart touched, and every eye captivated! 💍✨",
+      "source_row_idx": 1451,
+      "message_index": 3
+    },
+    {
+      "role": "User",
+      "content": "now with the same principle give me the best 13 SEO oriented TAGs for the product.\nRemember that tags max lenght is 20 letters",
+      "source_row_idx": 1452,
+      "message_index": 4
+    },
+    {
+      "role": "Agent",
+      "content": "1. MauveFlowerClipart\n2. WeddingDesigns\n3. FlowerBouquets\n4. WatercolorFloral\n5. InvitationArt\n6. FlowerInAJar\n7. WreathCrowns\n8. FloralPattern\n9. WeddingGraphics\n10. BridalClipart\n11. MauveBranches\n12. DigitalArtwork\n13. EcoFriendlyArt",
+      "source_row_idx": 1453,
+      "message_index": 5
+    }
+  ]
+}

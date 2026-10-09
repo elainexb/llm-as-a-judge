@@ -1,0 +1,23 @@
+{
+  "status": "validated_pending_review",
+  "errors": [],
+  "semantic_review": "pending; mechanical checks do not establish semantic accuracy",
+  "versions": {
+    "helper_sha256": "409db1c4608a10cedc526f59072d75abe2b64063ce36d01cc47d699a763e3144",
+    "skill_hashes": {
+      "SKILL.md": "0c947d7aa05a961d74f230d35c6e8d30a30c2daefecca691e66b3f00505edc0a",
+      "references/output-contract.md": "215b36a72bdb1acce1cf3d6164ba3ff383f22821f27a8a4870b20e90408e8c1f"
+    },
+    "contract_sha256": "215b36a72bdb1acce1cf3d6164ba3ff383f22821f27a8a4870b20e90408e8c1f"
+  },
+  "files": {
+    "input": {
+      "path": "/Users/xuebai/Documents/ChatGPT/llm as a judge/native_inputs/C09.json",
+      "sha256": "21c474f64e1452caf597468b6d63d76270b232667269cc07a59fcc2eb126e8d4"
+    },
+    "analysis": {
+      "path": "/Users/xuebai/Documents/ChatGPT/llm as a judge/tests/fixtures/c09_draft_review.json",
+      "sha256": "4877f624db36fd04586efec4498daf1b635f0e0a9b0038a45907067936167e67"
+    }
+  }
+}

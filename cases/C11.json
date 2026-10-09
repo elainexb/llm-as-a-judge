@@ -1,0 +1,61 @@
+{
+  "case_id": "C11",
+  "source_conversation_id": "wildfeedback_rows_1012_1019",
+  "source_dataset": "microsoft/WildFeedback",
+  "source_config": "sat_dsat_annotation",
+  "source_split": "train",
+  "source_row_start": 1012,
+  "source_row_end_inclusive": 1019,
+  "feedback_message_index": 6,
+  "candidate_response_index": 7,
+  "messages": [
+    {
+      "message_index": 0,
+      "role": "User",
+      "content": "Write funny answer to this question [What are your thoughts about the new study of great white sharks increased population? It’s going to have a huge effect on my going into the water this summer down in Dennisport!]",
+      "source_row_idx": 1012
+    },
+    {
+      "message_index": 1,
+      "role": "Agent",
+      "content": "Well, it looks like Shark Tank is getting some new investors this summer in Dennisport! Better brush up on my sales pitch and find some shark repellent!",
+      "source_row_idx": 1013
+    },
+    {
+      "message_index": 2,
+      "role": "User",
+      "content": "Write mire",
+      "source_row_idx": 1014
+    },
+    {
+      "message_index": 3,
+      "role": "Agent",
+      "content": "Guess it's time to trade in my surfboard for a shark cage and start practicing my synchronized swimming with Jaws and friends! Dennisport, here I come!",
+      "source_row_idx": 1015
+    },
+    {
+      "message_index": 4,
+      "role": "User",
+      "content": "Write funny answer to this question someone asked me [What are your thoughts about the new study of great white sharks increased population? It’s going to have a huge effect on my going into the water this summer down in Dennisport!]",
+      "source_row_idx": 1016
+    },
+    {
+      "message_index": 5,
+      "role": "Agent",
+      "content": "I, for one, welcome our new great white shark overlords. As for my beach plans, I've always wanted to perfect my air guitar skills on the sand – no water necessary. Rock on, Dennisport!",
+      "source_row_idx": 1017
+    },
+    {
+      "message_index": 6,
+      "role": "User",
+      "content": "Write more",
+      "source_row_idx": 1018
+    },
+    {
+      "message_index": 7,
+      "role": "Agent",
+      "content": "Well, looks like it's time to invest in that inflatable T-Rex costume I've had my eye on – they say sharks don't like prehistoric competition! Dennisport, prepare for a dino invasion!",
+      "source_row_idx": 1019
+    }
+  ]
+}
